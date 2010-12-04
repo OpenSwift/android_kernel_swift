@@ -1,0 +1,53 @@
+config SWIFT_BATTERY_STUB
+	default y
+	bool "Swift garbage battery"
+
+menu "Swift Board Debugging"
+
+comment "Swift Board Debugging"
+
+config S6D05A0_SYS_DEBUG
+	depends on FB_MSM_MDDI_SWIFT_PANEL
+	default n
+	bool "Add sys File at LCD driver for TEST"
+	help
+	  add the sys fie for LCD test
+
+config S6D05A0_MSG_DEBUG
+	depends on FB_MSM_MDDI_SWIFT_PANEL
+	default n
+	bool "Debugging MSG print at LCD driver"
+	help
+	  add the message for LCD
+
+config RT9393_SYS_DEBUG
+	default n
+	bool "Add sys File at Charger Pump driver for TEST"
+	help
+	  add the sys fie for Charger Pump test
+
+config RT9393_MSG_DEBUG
+	default n
+	bool "Debugging MSG print at Charger Pump driver"
+	help
+	  add the message for Charger Pump
+
+config AKM8973_MSG_DEBUG
+	default n
+	bool "Debugging MSG print at Digital Compass"
+	help
+	  add the message for Digital Compass(akm8973)
+
+config BMA150MT_MSG_DEBUG
+	default n
+	bool "Debugging MSG print at Motion Sensor(MT debug?)"
+	help
+	  add the message for Motion Sensor(BMA150)
+
+config BMA150M_MSG_DEBUG
+	default n
+	bool "Debugging MSG print at Motion Sensor(M debug?)"
+	help
+	  add the message for Motion Sensor(BMA150)
+
+endmenu
