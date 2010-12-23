@@ -351,17 +351,17 @@ extern int amp_read_register(char reg, int *ret);
 
 
 
-#define		LGE_SND_DEVICE_HANDSET						0
-#define		LGE_SND_DEVICE_STEREO_HEADSET				3  // FOR VOICE
-#define		LGE_SND_DEVICE_STEREO_HEADSET_AUDIO			2 // FOR MEDIA
-#define		LGE_SND_DEVICE_SPEAKER_AUDIO				5  // FOR MEDIA
-#define		LGE_SND_DEVICE_SPEAKER_PHONE				6  // FOR VOICE
-#define		LGE_SND_DEVICE_HEADSET_SPEAKER				7  // FOR both headset and speaker
-#define		LGE_SND_DEVICE_VOICE_RECORDER				8  // FOR VOICE RECORDER
-#define		LGE_SND_DEVICE_FM_RADIO_HEADSET_MEDIA		9  // FOR FM RADIO HEADSET MEDIA
-#define		LGE_SND_DEVICE_FM_RADIO_SPEAKER_MEDIA		10 // FOR FM RADIO HEADSET MEDIA MULTI
-#define		LGE_SND_DEVICE_BT_HEADSET					12 // FOR BT (SCO)
-#define		LGE_SND_DEVICE_A2DP_HEADSET					11 // FOR BT (A2DP)
+#define		SND_DEVICE_HANDSET						0
+#define		SND_DEVICE_STEREO_HEADSET				3  // FOR VOICE
+#define		SND_DEVICE_STEREO_HEADSET_AUDIO			2 // FOR MEDIA
+#define		SND_DEVICE_SPEAKER_AUDIO				5  // FOR MEDIA
+#define		SND_DEVICE_SPEAKER_PHONE				6  // FOR VOICE
+#define		SND_DEVICE_HEADSET_SPEAKER				7  // FOR both headset and speaker
+#define		SND_DEVICE_VOICE_RECORDER				8  // FOR VOICE RECORDER
+#define		SND_DEVICE_FM_RADIO_HEADSET_MEDIA		9  // FOR FM RADIO HEADSET MEDIA
+#define		SND_DEVICE_FM_RADIO_SPEAKER_MEDIA		10 // FOR FM RADIO HEADSET MEDIA MULTI
+#define		SND_DEVICE_BT_HEADSET					12 // FOR BT (SCO)
+#define		SND_DEVICE_A2DP_HEADSET					11 // FOR BT (A2DP)
 
 static int CurrentSndDevice = -1;
 
@@ -414,28 +414,28 @@ typedef enum {
 
 
 /*
-#define		LGE_SND_DEVICE_HANDSET						0
-#define		LGE_SND_DEVICE_STEREO_HEADSET				3  // FOR VOICE
-#define		LGE_SND_DEVICE_STEREO_HEADSET_AUDIO			31 // FOR MEDIA
-#define		LGE_SND_DEVICE_SPEAKER_AUDIO				5  // FOR VOICE
-#define		LGE_SND_DEVICE_SPEAKER_PHONE				6  // FOR MEDIA
-#define		LGE_SND_DEVICE_HEADSET_SPEAKER				7  // FOR both headset and speaker
-#define		LGE_SND_DEVICE_VOICE_RECORDER				8  // FOR VOICE RECORDER
-#define		LGE_SND_DEVICE_FM_RADIO_HEADSET_MEDIA		9  // FOR FM RADIO HEADSET MEDIA
-#define		LGE_SND_DEVICE_FM_RADIO_SPEAKER_MEDIA		10 // FOR FM RADIO HEADSET MEDIA MULTI
-#define		LGE_SND_DEVICE_BT_HEADSET					12 // FOR BT (SCO)
-#define		LGE_SND_DEVICE_A2DP_HEADSET					20 // FOR BT (A2DP)
+#define		SND_DEVICE_HANDSET						0
+#define		SND_DEVICE_STEREO_HEADSET				3  // FOR VOICE
+#define		SND_DEVICE_STEREO_HEADSET_AUDIO			31 // FOR MEDIA
+#define		SND_DEVICE_SPEAKER_AUDIO				5  // FOR VOICE
+#define		SND_DEVICE_SPEAKER_PHONE				6  // FOR MEDIA
+#define		SND_DEVICE_HEADSET_SPEAKER				7  // FOR both headset and speaker
+#define		SND_DEVICE_VOICE_RECORDER				8  // FOR VOICE RECORDER
+#define		SND_DEVICE_FM_RADIO_HEADSET_MEDIA		9  // FOR FM RADIO HEADSET MEDIA
+#define		SND_DEVICE_FM_RADIO_SPEAKER_MEDIA		10 // FOR FM RADIO HEADSET MEDIA MULTI
+#define		SND_DEVICE_BT_HEADSET					12 // FOR BT (SCO)
+#define		SND_DEVICE_A2DP_HEADSET					20 // FOR BT (A2DP)
 */
 
 static void set_amp_gain(voc_codec_type voc_codec, amp_gain_type gain_type, int value)
 {
 	switch(voc_codec) {
-		case  LGE_SND_DEVICE_HANDSET:
+		case  SND_DEVICE_HANDSET:
 			D("voc_codec %d does not use the amp\n", voc_codec);
 			break;
-		case  LGE_SND_DEVICE_STEREO_HEADSET:
-	    case  LGE_SND_DEVICE_STEREO_HEADSET_AUDIO:
-		case  LGE_SND_DEVICE_FM_RADIO_HEADSET_MEDIA:
+		case  SND_DEVICE_STEREO_HEADSET:
+	    case  SND_DEVICE_STEREO_HEADSET_AUDIO:
+		case  SND_DEVICE_FM_RADIO_HEADSET_MEDIA:
 			if ( gain_type == HPH){
 #if 0
 				amp_write_register(0x00, 0x20);
@@ -465,9 +465,9 @@ static void set_amp_gain(voc_codec_type voc_codec, amp_gain_type gain_type, int 
 				D("voc_codec %d does not use gain_type[%d]\n",voc_codec, gain_type);
 			}
 			break;
-		case  LGE_SND_DEVICE_SPEAKER_PHONE:
-		case  LGE_SND_DEVICE_SPEAKER_AUDIO:
-		case  LGE_SND_DEVICE_FM_RADIO_SPEAKER_MEDIA:
+		case  SND_DEVICE_SPEAKER_PHONE:
+		case  SND_DEVICE_SPEAKER_AUDIO:
+		case  SND_DEVICE_FM_RADIO_SPEAKER_MEDIA:
 			if ( gain_type == SPK) {
 #if 0
 				amp_write_register(0x00, 0x10);
@@ -491,7 +491,7 @@ static void set_amp_gain(voc_codec_type voc_codec, amp_gain_type gain_type, int 
 				D("voc_codec %d does not use gain_type[%d]\n",voc_codec, gain_type);
 			}
 			break;
-		case   LGE_SND_DEVICE_HEADSET_SPEAKER:
+		case   SND_DEVICE_HEADSET_SPEAKER:
 			if ( gain_type == HPH) {
 				amp_write_register(0x01, 0x100B);
 				amp_write_register(0x02, 0x60C0);
@@ -544,12 +544,12 @@ static int get_amp_gain(voc_codec_type voc_codec, amp_gain_type gain_type)
 	int ret = 0;
 
 	switch(voc_codec) {
-		case  LGE_SND_DEVICE_HANDSET:
+		case  SND_DEVICE_HANDSET:
 			D("voc_codec %d does not use the amp\n", voc_codec);
 			break;
-		case  LGE_SND_DEVICE_STEREO_HEADSET:
-		case  LGE_SND_DEVICE_STEREO_HEADSET_AUDIO:
-		case  LGE_SND_DEVICE_FM_RADIO_HEADSET_MEDIA:
+		case  SND_DEVICE_STEREO_HEADSET:
+		case  SND_DEVICE_STEREO_HEADSET_AUDIO:
+		case  SND_DEVICE_FM_RADIO_HEADSET_MEDIA:
 			if ( gain_type == HPH ){
 				/*
 				amp_read_register(0x02, (unsigned char *)&ret);
@@ -559,9 +559,9 @@ static int get_amp_gain(voc_codec_type voc_codec, amp_gain_type gain_type)
 				D("voc_codec %d does not use gain_type[%d]\n",voc_codec, gain_type);
 			}
 			break;
-		case  LGE_SND_DEVICE_SPEAKER_AUDIO:
-		case  LGE_SND_DEVICE_SPEAKER_PHONE:
-		case  LGE_SND_DEVICE_FM_RADIO_SPEAKER_MEDIA:
+		case  SND_DEVICE_SPEAKER_AUDIO:
+		case  SND_DEVICE_SPEAKER_PHONE:
+		case  SND_DEVICE_FM_RADIO_SPEAKER_MEDIA:
 			if ( gain_type == SPK ){
 				/*
 				amp_read_register(0x01, (unsigned char *)&ret);
@@ -571,7 +571,7 @@ static int get_amp_gain(voc_codec_type voc_codec, amp_gain_type gain_type)
 				D("voc_codec %d does not use gain_type[%d]\n",voc_codec, gain_type);
 			}
 			break;
-		case  LGE_SND_DEVICE_HEADSET_SPEAKER:
+		case  SND_DEVICE_HEADSET_SPEAKER:
 				if ( gain_type == HPH ){
 					//amp_read_register(0x02, &ret);
 					;//D("amp_read : 0x02 => %x\n", ret);
