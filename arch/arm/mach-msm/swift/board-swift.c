@@ -119,8 +119,11 @@ static struct usb_mass_storage_platform_data usb_mass_storage_pdata = {
 	.buf_size       = 16384,
 
 #if defined(CONFIG_MACH_MSM7X27_SWIFT) && defined(CONFIG_LGE_USB_DRIVER)
-	.vendor         = "LGE",
+	/*.vendor         = "LGE",
 	.product        = "Android Platform",
+	.release        = 0xffff,*/
+	.vendor         = "GOOGLE",
+	.product        = "Mass storage",
 	.release        = 0xffff,
 #else /* Below is original */
 	.vendor         = "GOOGLE",
@@ -402,6 +405,7 @@ static struct snd_endpoint snd_endpoints_list[] = {
 	SND(TTY_HCO, 16),
 	SND(CURRENT, 25),
 */
+
 	SND(HANDSET, 0),
 	SND(HEADSET_STEREO_AUDIO, 2),//31
 	SND(TTY_HEADSET, 2),				// alohag
@@ -423,7 +427,7 @@ static struct snd_endpoint snd_endpoints_list[] = {
 	SND(FM_SPEAKER, 10),				// alohag
 	SND(BT, 12),
 	SND(BT_A2DP, 11),//20
-	SND(CURRENT, 35),
+	SND(CURRENT, 35),	
 
 #endif
 };
@@ -457,18 +461,7 @@ static struct snd_endpoint snd_endpoints_list[] = {
 	SND(IN_S_SADC_OUT_SPEAKER_PHONE, 25),
 	SND(CURRENT, 27),
 #else
-	SND(HANDSET, 0),
-	SND(HEADSET_STEREO_AUDIO, 2),//31
-	SND(HEADSET_STEREO, 3),
-	SND(SPEAKER_PHONE, 6),
-	SND(SPEAKER_AUDIO, 5),
-	SND(HEADSET_SPEAKER, 7),
-	SND(VOICE_RECORDER, 8),
-	SND(FM_RADIO_HEADSET_MEDIA, 9),
-	SND(FM_RADIO_SPEAKER_MEDIA, 10),
-	SND(BT, 12),
-	SND(BT_A2DP, 11),//20
-	SND(CURRENT, 35),	
+
 #endif
 };
 #endif
@@ -680,543 +673,65 @@ static struct platform_device eve_atcmd_device = {
 
 #ifdef CONFIG_BATTERY_MSM
 static u32 msm_calculate_batt_capacity(u32 current_voltage);
-u32 calculate_capacity(u32 current_voltage);
-u32 calculate_capacity(u32 current_voltage)
-{
-	int i;
-	
-	u32 cap=0;
-	
-	printk("%s: batt_vol=%d\n",__func__,current_voltage);
-	for(i=0;i<101;i++){
-		if(current_voltage<=3200){
-			cap=0;
-			
-		}
-		if(current_voltage>=3201 && current_voltage<=3210){
-			cap=1;
- 
-		}
-
-		if(current_voltage>=3211 && current_voltage<=3220){
-			cap=2;
- 
-		}
-
-		if(current_voltage>=3221 && current_voltage<=3230){
-			cap=3;
- 
-		}
-
-		if(current_voltage>=3231 && current_voltage<=3240){
-			cap=4;
- 
-		}
-
-		if(current_voltage>=3241 && current_voltage<=3250){
-			cap=5;
- 
-		}
-
-		if(current_voltage>=3251 && current_voltage<=3260){
-			cap=6;
- 
-		}
-
-		if(current_voltage>=3261 && current_voltage<=3270){
-			cap=7;
- 
-		}
-
-		if(current_voltage>=3271 && current_voltage<=3280){
-			cap=8;
- 
-		}
-
-		if(current_voltage>=3281 && current_voltage<=3290){
-			cap=9;
- 
-		}
-
-		if(current_voltage>=3291 && current_voltage<=3300){
-			cap=10;
- 
-		}
-
-		if(current_voltage>=3301 && current_voltage<=3310){
-			cap=11;
- 
-		}
-
-		if(current_voltage>=3311 && current_voltage<=3320){
-			cap=12;
- 
-		}
-
-		if(current_voltage>=3321 && current_voltage<=3330){
-			cap=13;
- 
-		}
-
-		if(current_voltage>=3331 && current_voltage<=3340){
-			cap=14;
- 
-		}
-
-		if(current_voltage>=3341 && current_voltage<=3350){
-			cap=15;
- 
-		}
-
-		if(current_voltage>=3351 && current_voltage<=3360){
-			cap=16;
- 
-		}
-
-		if(current_voltage>=3361 && current_voltage<=3370){
-			cap=17;
- 
-		}
-
-		if(current_voltage>=3371 && current_voltage<=3380){
-			cap=18;
- 
-		}
-
-		if(current_voltage>=3381 && current_voltage<=3390){
-			cap=19;
- 
-		}
-
-		if(current_voltage>=3391 && current_voltage<=3400){
-			cap=20;
- 
-		}
-
-		if(current_voltage>=3401 && current_voltage<=3410){
-			cap=21;
- 
-		}
-
-		if(current_voltage>=3411 && current_voltage<=3420){
-			cap=22;
- 
-		}
-
-		if(current_voltage>=3421 && current_voltage<=3430){
-			cap=23;
- 
-		}
-
-		if(current_voltage>=3431 && current_voltage<=3440){
-			cap=24;
- 
-		}
-
-		if(current_voltage>=3441 && current_voltage<=3450){
-			cap=25;
- 
-		}
-
-		if(current_voltage>=3451 && current_voltage<=3460){
-			cap=26;
- 
-		}
-
-		if(current_voltage>=3461 && current_voltage<=3470){
-			cap=27;
- 
-		}
-
-		if(current_voltage>=3471 && current_voltage<=3480){
-			cap=28;
- 
-		}
-
-		if(current_voltage>=3481 && current_voltage<=3490){
-			cap=29;
- 
-		}
-
-		if(current_voltage>=3491 && current_voltage<=3500){
-			cap=30;
- 
-		}
-
-		if(current_voltage>=3501 && current_voltage<=3510){
-			cap=31;
- 
-		}
-
-		if(current_voltage>=3511 && current_voltage<=3520){
-			cap=32;
- 
-		}
-
-		if(current_voltage>=3521 && current_voltage<=3530){
-			cap=33;
- 
-		}
-
-		if(current_voltage>=3531 && current_voltage<=3540){
-			cap=34;
- 
-		}
-
-		if(current_voltage>=3541 && current_voltage<=3550){
-			cap=35;
- 
-		}
-
-		if(current_voltage>=3551 && current_voltage<=3560){
-			cap=36;
- 
-		}
-
-		if(current_voltage>=3561 && current_voltage<=3470){
-			cap=37;
- 
-		}
-
-		if(current_voltage>=3571 && current_voltage<=3580){
-			cap=38;
- 
-		}
-
-		if(current_voltage>=3581 && current_voltage<=3590){
-			cap=39;
- 
-		}
-
-		if(current_voltage>=3591 && current_voltage<=3600){
-			cap=40;
- 
-		}
-
-		if(current_voltage>=3601 && current_voltage<=3610){
-			cap=41;
- 
-		}
-
-		if(current_voltage>=3611 && current_voltage<=3620){
-			cap=42;
- 
-		}
-
-		if(current_voltage>=3621 && current_voltage<=3630){
-			cap=43;
- 
-		}
-
-		if(current_voltage>=3631 && current_voltage<=3640){
-			cap=44;
- 
-		}
-
-		if(current_voltage>=3641 && current_voltage<=3650){
-			cap=45;
- 
-		}
-
-		if(current_voltage>=3651 && current_voltage<=3660){
-			cap=46;
- 
-		}
-
-		if(current_voltage>=3661 && current_voltage<=3670){
-			cap=47;
- 
-		}
-
-		if(current_voltage>=3671 && current_voltage<=3680){
-			cap=48;
- 
-		}
-
-		if(current_voltage>=3681 && current_voltage<=3690){
-			cap=49;
- 
-		}
-
-		if(current_voltage>=3691 && current_voltage<=3700){
-			cap=50;
- 
-		}
-
-		if(current_voltage>=3701 && current_voltage<=3710){
-			cap=51;
- 
-		}
-
-		if(current_voltage>=3711 && current_voltage<=3720){
-			cap=52;
- 
-		}
-
-		if(current_voltage>=3721 && current_voltage<=3730){
-			cap=53;
- 
-		}
-
-		if(current_voltage>=3731 && current_voltage<=3740){
-			cap=54;
- 
-		}
-
-		if(current_voltage>=3741 && current_voltage<=3750){
-			cap=55;
- 
-		}
-
-		if(current_voltage>=3751 && current_voltage<=3760){
-			cap=56;
- 
-		}
-
-		if(current_voltage>=3761 && current_voltage<=3770){
-			cap=57;
- 
-		}
-
-		if(current_voltage>=3771 && current_voltage<=3780){
-			cap=58;
- 
-		}
-
-		if(current_voltage>=3781 && current_voltage<=3790){
-			cap=59;
- 
-		}
-
-		if(current_voltage>=3791 && current_voltage<=3800){
-			cap=60;
- 
-		}
-
-		if(current_voltage>=3801 && current_voltage<=3810){
-			cap=61;
- 
-		}
-
-		if(current_voltage>=3811 && current_voltage<=3820){
-			cap=62;
- 
-		}
-
-		if(current_voltage>=3821 && current_voltage<=3830){
-			cap=63;
- 
-		}
-
-		if(current_voltage>=3831 && current_voltage<=3840){
-			cap=64;
- 
-		}
-
-		if(current_voltage>=3841 && current_voltage<=3850){
-			cap=65;
- 
-		}
-
-		if(current_voltage>=3851 && current_voltage<=3860){
-			cap=66;
- 
-		}
-
-		if(current_voltage>=3861 && current_voltage<=3870){
-			cap=67;
- 
-		}
-
-		if(current_voltage>=3871 && current_voltage<=3880){
-			cap=68;
- 
-		}
-
-		if(current_voltage>=3881 && current_voltage<=3890){
-			cap=69;
- 
-		}
-
-		if(current_voltage>=3891 && current_voltage<=3900){
-			cap=70;
- 
-		}
-
-		if(current_voltage>=3901 && current_voltage<=3910){
-			cap=71;
- 
-		}
-
-		if(current_voltage>=3911 && current_voltage<=3920){
-			cap=72;
- 
-		}
-
-		if(current_voltage>=3921 && current_voltage<=3930){
-			cap=73;
- 
-		}
-
-		if(current_voltage>=3931 && current_voltage<=3940){
-			cap=74;
- 
-		}
-
-		if(current_voltage>=3941 && current_voltage<=3950){
-			cap=75;
- 
-		}
-
-		if(current_voltage>=3951 && current_voltage<=3960){
-			cap=76;
- 
-		}
-
-		if(current_voltage>=3961 && current_voltage<=3970){
-			cap=77;
- 
-		}
-
-		if(current_voltage>=3971 && current_voltage<=3980){
-			cap=78;
- 
-		}
-
-		if(current_voltage>=3981 && current_voltage<=3990){
-			cap=79;
- 
-		}
-
-		if(current_voltage>=3991 && current_voltage<=4000){
-			cap=80;
- 
-		}
-
-		if(current_voltage>=4001 && current_voltage<=4010){
-			cap=81;
- 
-		}
-
-		if(current_voltage>=4011 && current_voltage<=4020){
-			cap=82;
- 
-		}
-
-		if(current_voltage>=4021 && current_voltage<=4030){
-			cap=83;
- 
-		}
-
-		if(current_voltage>=4031 && current_voltage<=4040){
-			cap=84;
- 
-		}
-
-		if(current_voltage>=4041 && current_voltage<=4050){
-			cap=85;
- 
-		}
-
-		if(current_voltage>=4051 && current_voltage<=4060){
-			cap=86;
- 
-		}
-
-		if(current_voltage>=4061 && current_voltage<=4070){
-			cap=87;
- 
-		}
-
-		if(current_voltage>=4071 && current_voltage<=4080){
-			cap=88;
- 
-		}
-
-		if(current_voltage>=4081 && current_voltage<=4090){
-			cap=89;
- 
-		}
-
-		if(current_voltage>=4091 && current_voltage<=4100){
-			cap=90;
- 
-		}
-
-		if(current_voltage>=4101 && current_voltage<=4110){
-			cap=91;
- 
-		}
-
-		if(current_voltage>=4111 && current_voltage<=4120){
-			cap=92;
- 
-		}
-
-		if(current_voltage>=4121 && current_voltage<=4130){
-			cap=93;
- 
-		}
-
-		if(current_voltage>=4131 && current_voltage<=4140){
-			cap=94;
- 
-		}
-
-		if(current_voltage>=4141 && current_voltage<=4150){
-			cap=95;
- 
-		}
-
-		if(current_voltage>=4151 && current_voltage<=4160){
-			cap=96;
- 
-		}
-
-		if(current_voltage>=4161 && current_voltage<=4170){
-			cap=97;
- 
-		}
-
-		if(current_voltage>=4171 && current_voltage<=4180){
-			cap=98;
- 
-		}
-
-		if(current_voltage>=4181 && current_voltage<=4190){
-			cap=99;
- 
-		}
-
-		if(current_voltage>=4191 && current_voltage<=4200){
-			cap=100;
- 
-		}
-	printk("%s: capacity=%d\n",__func__,cap);
-	return cap;
- }
-}
+u32 calculate_capacity(u32 v);
 
 static struct msm_psy_batt_pdata msm_psy_batt_data = {
 	.voltage_min_design 	= 3200,
 	.voltage_max_design	= 4300,
 	.avail_chg_sources   	= AC_CHG | USB_CHG ,
 	.batt_technology        = POWER_SUPPLY_TECHNOLOGY_LION,
-	.calculate_capacity	= &calculate_capacity,
+	.calculate_capacity	= &msm_calculate_batt_capacity,
 };
+#if 0 //original code
+static u32 msm_calculate_batt_capacity(u32 current_voltage)
+{
+	u32 low_voltage   = msm_psy_batt_data.voltage_min_design;
+	u32 high_voltage  = msm_psy_batt_data.voltage_max_design;
 
+	return (current_voltage - low_voltage) * 100
+		/ (high_voltage - low_voltage);
+}
+#else
+u32 calculate_capacity(u32 v)
+{
+	int i;
+	u32 cap;
+	
+	printk("%s: batt_vol=%d\n",__func__,v);
+	for(i=0;i<ARRAY_SIZE(tbl);i++){
+		if(v<=3200){
+			cap=0;
+			break;
+		}
+		if(v>=4198){
+			cap=100;
+			break;
+		}
+		if(v>=tbl[i].vol){
+			if(i==(ARRAY_SIZE(tbl)-1)){
+				cap=99;
+				break;
+			}
+			continue;
+		}
+		cap=tbl[i].capacity;
+		break;
+	}
+	printk("%s: capacity=%d\n",__func__,cap);
+
+	return cap;
+}
 static u32 msm_calculate_batt_capacity(u32 current_voltage)
 {
 	return calculate_capacity(current_voltage);
 }
-
-#endif 
+#endif
 static struct platform_device msm_batt_device = {
 	.name 		    = "msm-battery",
 	.id		    = -1,
 	.dev.platform_data  = &msm_psy_batt_data,
 };
-
+#endif
 static struct platform_device hs_device = {
    .name = "msm-handset",
    .id   = -1,
