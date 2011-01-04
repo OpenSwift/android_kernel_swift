@@ -42,10 +42,6 @@
 #define ONCRPC_LGE_ATCMD_MSG_PROC 4
 #define ONCRPC_LGE_ATCMD_MSG_RSTSTR_PROC 5
 #define ONCRPC_LGE_ATCMD_FACTORY_LARGE_PROC 6
-#define ONCRPC_LGE_GET_FLEX_MCC_PROC 7 
-#define ONCRPC_LGE_GET_FLEX_MNC_PROC 8 
-#define ONCRPC_LGE_GET_FLEX_OPERATOR_CODE_PROC 9 
-#define ONCRPC_LGE_GET_FLEX_COUNTRY_CODE_PROC 10
 
 #define DSATAPIPROG		0x30000074
 #define DSATAPIVERS		0
@@ -234,7 +230,7 @@ static void lg_fb_control_timer(unsigned long arg)
 #include <linux/at_kpd_eve.h> 
 #include <mach/msm_rpcrouter.h> 
 
-static char s_bufFlexINI[500];
+
 static char s_bufItem[500];
 static char s_bufValue2[400];
 static char s_bufValue3[100];
@@ -732,7 +728,8 @@ static int  dsatHandleAT_ARM11(uint32_t at_cmd, uint32_t at_act, uint32_t at_par
           else if (at_act == ATCMD_ASSIGN) {
 				if (at_param== 1) 	
 					{
-					at_gkpd_cfg(1/*WRITE GKPD*/,1/*WRITE TO SET GKPD BUFF*/); //SET GKPD STATE
+					at_gkpd_cfg(1/*WRITE GKPD*/,1/*WRITE TO SET GKPD BUFF*/); //SET GKPD STATE
+
 					ret_value1 = 1; 	// "GKPD ON"
 				}
 				else	{
@@ -902,127 +899,6 @@ static int  dsatHandleAT_ARM11(uint32_t at_cmd, uint32_t at_act, uint32_t at_par
 	return result;
 }
 
-int lg_get_flex_from_xml(char *strIndex, char* flexValue)
-{
-	int                       fd;
-	int                       iFlexSize;
-	signed long int      res;
-	int                       iTotalCnt, iItemCnt,iValueCnt,j,iItemCntAll;
-
-		
-//	char*                    s_bufFlexINI=0; //Flex INI ?????? ??ü string
-//	char                    s_bufItem[500];     //one line
-	// char                    s_bufValue1[10];   //country
-//	char                    s_bufValue2[400]; //value
-//	char                    s_bufValue3[100]; //ID
-	int response = 0;
-
-
-	iFlexSize = 500;	
-	fd = sys_open((const char __user *) "/system/etc/flex/flex.xml", O_RDONLY,0);
-
-	if (fd == -1)	
-		{
-		printk("read data fail");
-		return 0;
-		}
-
-	//iFlexSize = (unsigned)sys_lseek(fd, (off_t)0, 0);
-//	s_bufFlexINI = kmalloc(500, GFP_KERNEL);
-	//memset(s_bufFlexINI,0x00,sizeof(char)*iFlexSize);	
-	res = sys_read(fd, (char __user*)s_bufFlexINI, sizeof(char)*iFlexSize);
-	
-	sys_close(fd);
-
-	printk("read data flex.xml fd: %d iFlexSize : %d res;%d\n", fd, iFlexSize, res);
-
-	iFlexSize=res;
-	
-	iItemCnt = 0;
-	iItemCntAll = 0;
-	
-	for(iTotalCnt=0; iTotalCnt<iFlexSize;iTotalCnt++)  //Flex ini ?????? ?? character ??n?1?
-	{
-		//printk("%x ",s_bufFlexINI[iTotalCnt]);
-		if ((s_bufFlexINI[iItemCntAll]) != '\n')  //???ڿ?; ???? ?о??????ۿ? ?ֱ?
-		{
-			s_bufItem[iItemCnt]=s_bufFlexINI[iItemCntAll];
-			iItemCnt ++;
-			
-		} 
-		else  //?о??? ???ڿ? ?м?
-		{	
-			//printk("\n",s_bufFlexINI[iTotalCnt]);
-			s_bufItem[iItemCnt]='\n';
-				
-			j = 0;
-			iValueCnt = 0;
-			memset(s_bufValue3,0x00,sizeof(char)*100);
-			while((s_bufItem[j] != '=') && (s_bufItem[j] != '\n') /*&& (s_bufItem[j] != ';')*/)  
-			{
-				//printk("\ns_bufValue3 ");
-				if(s_bufItem[j] != ' ' && s_bufItem[j] != '\t') 
-				{
-					s_bufValue3[iValueCnt++] = s_bufItem[j];
-					//printk("%x ",s_bufValue3[iValueCnt]);
-				}
-				j++;
-			}
-
-			if(!strncmp(s_bufValue3,strIndex,strlen(strIndex)))
-			{ 
-				printk("find %s ",strIndex);
-				iValueCnt = 0;
-				j++;
-				while(s_bufItem[j] != '\n' )  
-				{
-					//printk("\ns_bufItem ");
-					if(s_bufItem[j] != '"') 
-					{
-						s_bufValue2[iValueCnt++] = s_bufItem[j];
-						printk("%x ",s_bufValue2[iValueCnt]);
-					}
-					j++;
-				}
-				memcpy(flexValue,s_bufValue2, iValueCnt);
-				if(flexValue[iValueCnt-1] == '\r')
-				{
-					flexValue[iValueCnt-1] = 0x00;
-					if(iValueCnt == 1)
-					{
-						printk("\niValueCnt == 1");
-						response =  0;
-						goto lg_get_flex_fail;
-					}
-				}
-				else
-				{
-					flexValue[iValueCnt] = 0x00;
-					if(iValueCnt == 0)
-					{
-						printk("\niValueCnt == 0");
-						response = 0;
-						goto lg_get_flex_fail;
-					}
-				}
-				
-				response = 1;
-				goto lg_get_flex_fail;
-			}
-			iItemCnt = 0;
-		}
-		iItemCntAll++;
-	}
-
-
-lg_get_flex_fail:
-//	if ( s_bufFlexINI != 0 )
-//		kfree(s_bufFlexINI);
-
-
-	return response;
-
-}
 
 static int eta_execute(char *string)
 {
@@ -1299,84 +1175,6 @@ int result = RPC_ACCEPTSTAT_SUCCESS;
 		printk(KERN_INFO"ONCRPC_LGE_ATCMD_MSG_RSTSTR_PROC\n");
 		}
 	return 0;
-	case ONCRPC_LGE_GET_FLEX_MCC_PROC	:
-	{		
-		printk(KERN_INFO"ONCRPC_LGE_GET_FLEX_MCC_PROC\n");
-		memset(server->retvalue.ret_string, 0, sizeof(server->retvalue.ret_string));		
-		if(lg_get_flex_from_xml("FLEX_MCC_CODE", server->retvalue.ret_string))
-			result = RPC_RETURN_RESULT_OK;
-		else
-			result= RPC_RETURN_RESULT_ERROR;
-		server->retvalue.ret_value1 = strlen(server->retvalue.ret_string);
-		server->retvalue.ret_value2 = 0;
-		printk(KERN_INFO "ONCRPC_LGE_GET_FLEX_MCC_PROC return string : %d , %s\n",
-		      server->retvalue.ret_value1,server->retvalue.ret_string);		
-		return result;
-	}
-	case ONCRPC_LGE_GET_FLEX_MNC_PROC	:
-	{		
-		printk(KERN_INFO"ONCRPC_LGE_GET_FLEX_MNC_PROC\n");
-		memset(server->retvalue.ret_string, 0, sizeof(server->retvalue.ret_string));		
-		if(lg_get_flex_from_xml("FLEX_MNC_CODE", server->retvalue.ret_string))
-			result = RPC_RETURN_RESULT_OK;
-		else
-			result= RPC_RETURN_RESULT_ERROR;
-		server->retvalue.ret_value1 = strlen(server->retvalue.ret_string);
-		server->retvalue.ret_value2 = 0;
-		printk(KERN_INFO "ONCRPC_LGE_GET_FLEX_MNC_PROC return string : %d , %s\n",
-		      server->retvalue.ret_value1,server->retvalue.ret_string);	
-
-		return result;
-	}
-	case ONCRPC_LGE_GET_FLEX_OPERATOR_CODE_PROC	:
-	{		
-		printk(KERN_INFO"ONCRPC_LGE_GET_FLEX_OPERATOR_CODE_PROC\n");
-		memset(server->retvalue.ret_string, 0, sizeof(server->retvalue.ret_string));		
-		if(lg_get_flex_from_xml("FLEX_OPERATOR_CODE", server->retvalue.ret_string))
-			result = RPC_RETURN_RESULT_OK;
-		else
-			result= RPC_RETURN_RESULT_ERROR;
-		server->retvalue.ret_value1 = strlen(server->retvalue.ret_string);
-		server->retvalue.ret_value2 = 0;
-		printk(KERN_INFO "ONCRPC_LGE_GET_FLEX_OPERATOR_CODE_PROC return string : %d , %s\n",
-		      server->retvalue.ret_value1,server->retvalue.ret_string);	
-#if 0					
-		{
-			extern int msm_fb_refesh_enabled;
-			if (!msm_fb_refesh_enabled)
-				msm_fb_refesh_enabled = 1;
-		}
-#endif
-
-		
-		if(!msm_fb_refesh_enabled && !fb_control_timer_init) {
-			printk(KERN_INFO "%s: jori set timer\n",__func__);
-			setup_timer(&lg_fb_control,lg_fb_control_timer,0);
-
-			if(strncmp(server->retvalue.ret_string,"ORG",3)==0){
-				mod_timer(&lg_fb_control,jiffies +(ORG_FB_TIMEOUT*HZ/1000));
-			} else {
-				mod_timer(&lg_fb_control,jiffies +(OTHER_FB_TIMEOUT*HZ/1000));
-			}
-			fb_control_timer_init = 1;
-		}
-		return result;
-	}
-	case ONCRPC_LGE_GET_FLEX_COUNTRY_CODE_PROC	:
-	{		
-		printk(KERN_INFO"ONCRPC_LGE_GET_FLEX_COUNTRY_PROC\n");
-		memset(server->retvalue.ret_string, 0, sizeof(server->retvalue.ret_string));		
-		if(lg_get_flex_from_xml("FLEX_COUNTRY_CODE", server->retvalue.ret_string))
-			result = RPC_RETURN_RESULT_OK;
-		else
-			result= RPC_RETURN_RESULT_ERROR;
-		server->retvalue.ret_value1 = strlen(server->retvalue.ret_string);
-		server->retvalue.ret_value2 = 0;
-		printk(KERN_INFO "ONCRPC_LGE_GET_FLEX_COUNTRY_PROC return string : %d , %s\n",
-		      server->retvalue.ret_value1,server->retvalue.ret_string);		
-		return result;
-	}
-
 //LGE_UPDATE_E
 	default:
 		return -ENODEV;
@@ -1402,4 +1200,3 @@ static int __init rpc_misc_server_init(void)
 
 
 module_init(rpc_misc_server_init);
-
